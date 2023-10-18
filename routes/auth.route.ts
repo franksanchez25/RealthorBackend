@@ -1,6 +1,6 @@
 
 import { Router } from "express";
-import { signUp } from "../controller/auth.controller";
+import { signIn, signUp } from "../controller/auth.controller";
 import { body, check } from "express-validator";
 import { validateField } from "../middlewares/validateField";
 
@@ -15,6 +15,14 @@ check('email','must be a valid Email').isEmail()
 ],
 validateField, 
 signUp)
+
+authRouter.post('/signin',[
+    check('passwordbody','password Required').not().isEmpty(),
+    check('email','must be a valid Email').isEmail()
+],
+validateField,
+signIn
+)
 
 
 export default authRouter;

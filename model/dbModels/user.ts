@@ -13,6 +13,10 @@ const User = DB.define('User',{
     },
     password: {
         type:DataTypes.STRING
+    },
+    avatar:{
+        type:DataTypes.STRING,
+        defaultValue: "https://simulacionymedicina.es/wp-content/uploads/2015/11/default-avatar-300x300-1.jpg"
     }
 });
 

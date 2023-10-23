@@ -53,15 +53,15 @@ export const signIn = async (req: Request, res: Response)=> {
         })
     }
 
-      const validPassword = compare(passwordbody, validUser.dataValues.password);
-
+      const validPassword = await compare(passwordbody, validUser.dataValues.password);
+console.log(validPassword);
       if (!validPassword) {
         res.status(401).json({
-            msg:'invalid credentials'
+            msg:'Invalid user or password'
         })
        }
 
-       const token = Jwt.sign({id: validUser.dataValues.id}, process.env.JWT_SECRET|| '');  
+       const token =  Jwt.sign({id: validUser.dataValues.id}, process.env.JWT_SECRET|| '');  
 
        const {password: password, ...rest} = validUser.dataValues;
 
@@ -74,6 +74,59 @@ export const signIn = async (req: Request, res: Response)=> {
     } catch (error) {
         
     }
+
+
+}
+
+export const google = async (req: Request, res: Response)=> {
+
+    
+ 
+      try {
+        const validUser =  await User.findOne( { where: { email: req.body.email }});
+
+      if (validUser) {
+        const token = Jwt.sign({id: validUser.dataValues.id}, process.env.JWT_SECRET || '');
+        const {password: password, ...rest} = validUser.dataValues;
+       
+        return  res.cookie('access_token',token,{httpOnly: true})
+        .status(200)
+        .json(rest) 
+      }
+
+      if (!validUser) {
+
+        const salt = genSaltSync(10);
+        const genPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
+        const hashedPassword =  hashSync(genPassword, salt);
+      
+        const newUser = await User.create({
+       
+          username: req.body.username.split(" ").join("").toLowerCase() + Math.random().toString(36).slice(-8)
+              .slice(-4),
+          email: req.body.email,
+          password: hashedPassword,
+          avatar: "https://simulacionymedicina.es/wp-content/uploads/2015/11/default-avatar-300x300-1.jpg"
+      });
+
+      await newUser.save();
+
+      const token = Jwt.sign({id: newUser.dataValues.id}, process.env.JWT_SECRET || '');
+      
+      const {password: password, ...rest} = newUser.dataValues;
+
+     return res.cookie('access_token', token, {httpOnly:true}).status(200).json(rest);
+
+
+          }
+
+        
+      } catch (error) {
+        
+        console.log(error);
+      }
+      
+      
 
 
 }

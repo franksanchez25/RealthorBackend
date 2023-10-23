@@ -1,6 +1,6 @@
 
 import { Router } from "express";
-import { signIn, signUp } from "../controller/auth.controller";
+import { google, signIn, signUp } from "../controller/auth.controller";
 import { body, check } from "express-validator";
 import { validateField } from "../middlewares/validateField";
 
@@ -23,6 +23,8 @@ authRouter.post('/signin',[
 validateField,
 signIn
 )
+
+authRouter.post('/google', google);
 
 
 export default authRouter;

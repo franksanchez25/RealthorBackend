@@ -54,7 +54,7 @@ export const signIn = async (req: Request, res: Response)=> {
     }
 
       const validPassword = await compare(passwordbody, validUser.dataValues.password);
-console.log(validPassword);
+
       if (!validPassword) {
         res.status(401).json({
             msg:'Invalid user or password'
@@ -106,7 +106,7 @@ export const google = async (req: Request, res: Response)=> {
               .slice(-4),
           email: req.body.email,
           password: hashedPassword,
-          avatar: "https://simulacionymedicina.es/wp-content/uploads/2015/11/default-avatar-300x300-1.jpg"
+          avatar: req.body.avatar
       });
 
       await newUser.save();

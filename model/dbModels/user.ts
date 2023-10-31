@@ -8,7 +8,7 @@ const User = DB.define('User',{
     email:{
         type:DataTypes.STRING
     },
-    state: {
+    status: {
         type:DataTypes.STRING
     },
     password: {

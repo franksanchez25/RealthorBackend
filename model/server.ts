@@ -3,7 +3,7 @@ import DB from "../db/conection";
 import userRoutes from "../routes/user.route";
 import cors from "cors";
 import authRouter from "../routes/auth.route";
-
+import cookieParser from "cookie-parser";
 
 class Server {
 
@@ -48,11 +48,12 @@ class Server {
     middlewares (){
         this.app.use(cors());
         this.app.use( express.json());
+        this.app.use( cookieParser());
     }
 
     routes() {
-        this.app.use(this.apiPath.user, userRoutes ) 
-        this.app.use(this.apiPath.auth, authRouter ) 
+        this.app.use(this.apiPath.user, userRoutes ); 
+        this.app.use(this.apiPath.auth, authRouter ); 
       
     }
         

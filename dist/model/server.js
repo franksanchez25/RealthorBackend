@@ -17,6 +17,7 @@ const conection_1 = __importDefault(require("../db/conection"));
 const user_route_1 = __importDefault(require("../routes/user.route"));
 const cors_1 = __importDefault(require("cors"));
 const auth_route_1 = __importDefault(require("../routes/auth.route"));
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
 class Server {
     constructor() {
         this.apiPath = {
@@ -48,6 +49,7 @@ class Server {
     middlewares() {
         this.app.use((0, cors_1.default)());
         this.app.use(express_1.default.json());
+        this.app.use((0, cookie_parser_1.default)());
     }
     routes() {
         this.app.use(this.apiPath.user, user_route_1.default);

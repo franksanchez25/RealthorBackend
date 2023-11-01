@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateUserInfo = exports.getUsers = void 0;
+exports.deleteUser = exports.updateUserInfo = exports.getUsers = void 0;
 const bcrypt_1 = require("bcrypt");
 const user_1 = __importDefault(require("../model/dbModels/user"));
 const getUsers = (req, res) => {
@@ -36,7 +36,7 @@ const updateUserInfo = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
     const { id } = req.params;
     const { body } = req;
     if (req.userId != id) {
-        res.status(401).json({ msg: `You can only update your account: id-token :${req.userId} : id-req:${id}`,
+        res.status(401).json({ msg: `You can only update your account`,
         });
     }
     const salt = (0, bcrypt_1.genSaltSync)(10);
@@ -46,15 +46,40 @@ const updateUserInfo = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         }
         const user = yield user_1.default.findByPk(id);
         if (!user) {
-            res.status(404).json({ msg: 'No user found' });
+            return res.status(404).json({ msg: 'No user found' });
         }
         yield (user === null || user === void 0 ? void 0 : user.update(body));
         const _a = user === null || user === void 0 ? void 0 : user.dataValues, { password: password } = _a, rest = __rest(_a, ["password"]);
-        res.status(200).json(user);
+        return res.status(200).json(user);
     }
     catch (error) {
         next(res.json(error));
     }
 });
 exports.updateUserInfo = updateUserInfo;
+const deleteUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    let userState;
+    (function (userState) {
+        userState[userState["Active"] = 1] = "Active";
+        userState[userState["Disable"] = 0] = "Disable";
+    })(userState || (userState = {}));
+    const { id } = req.params;
+    if (req.userId != id) {
+        return next(res.status(401).json({ msg: `You can only update your account ` }));
+    }
+    try {
+        const user = yield user_1.default.findByPk(id);
+        if (!user) {
+            next(res.status(404).json({ msg: 'No user found' }));
+        }
+        console.log(userState.Disable);
+        yield (user === null || user === void 0 ? void 0 : user.update({ status: userState.Disable }));
+        res.clearCookie('access_token', { path: '/' });
+        res.status(200).json({ msg: 'User deleted' });
+    }
+    catch (error) {
+        next(res.json(error));
+    }
+});
+exports.deleteUser = deleteUser;
 //# sourceMappingURL=user.controller.js.map

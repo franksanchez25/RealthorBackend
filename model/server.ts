@@ -38,9 +38,9 @@ class Server {
         await DB.authenticate();
         console.log('Database online!');
         
-     } catch (error: any) {
+     } catch (error: any) { 
         
-        throw new Error(error);
+        throw new Error(error); 
      }
 
     }

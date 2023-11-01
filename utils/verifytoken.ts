@@ -27,7 +27,6 @@ export const verifyUserToken = (req: Request, res: Response, next: NextFunction)
 
          const verifyToken =  Jwt.verify(token,process.env.JWT_SECRET || 'NT');
 
-         console.log((<any>verifyToken).id);
 
          req.userId  = (<any>verifyToken).id
         

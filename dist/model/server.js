@@ -18,11 +18,13 @@ const user_route_1 = __importDefault(require("../routes/user.route"));
 const cors_1 = __importDefault(require("cors"));
 const auth_route_1 = __importDefault(require("../routes/auth.route"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
+const listing_route_1 = __importDefault(require("../routes/listing.route"));
 class Server {
     constructor() {
         this.apiPath = {
             user: '/api/user',
-            auth: '/api/auth'
+            auth: '/api/auth',
+            listing: '/api/listing'
         };
         this.app = (0, express_1.default)();
         this.port = process.env.PORT || '8000';
@@ -54,6 +56,7 @@ class Server {
     routes() {
         this.app.use(this.apiPath.user, user_route_1.default);
         this.app.use(this.apiPath.auth, auth_route_1.default);
+        this.app.use(this.apiPath.listing, listing_route_1.default);
     }
 }
 exports.default = Server;

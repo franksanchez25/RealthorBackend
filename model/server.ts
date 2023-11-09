@@ -4,6 +4,7 @@ import userRoutes from "../routes/user.route";
 import cors from "cors";
 import authRouter from "../routes/auth.route";
 import cookieParser from "cookie-parser";
+import listingRouter from "../routes/listing.route";
 
 class Server {
 
@@ -11,7 +12,9 @@ class Server {
     private port: string 
     private apiPath = {
         user: '/api/user',
-        auth: '/api/auth'
+        auth: '/api/auth',
+        listing: '/api/listing'
+
     }
      constructor (){
 
@@ -54,6 +57,7 @@ class Server {
     routes() {
         this.app.use(this.apiPath.user, userRoutes ); 
         this.app.use(this.apiPath.auth, authRouter ); 
+        this.app.use(this.apiPath.listing, listingRouter ); 
       
     }
         

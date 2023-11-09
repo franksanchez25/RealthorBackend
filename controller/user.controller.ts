@@ -62,7 +62,6 @@ if (req.userId != id) {
 
          if (!user) {  next(res.status(404).json({msg:'No user found'}))}
        
-         console.log(userState.Disable)
         await user?.update({status:userState.Disable});
 
          res.clearCookie('access_token',{path:'/'});
@@ -72,6 +71,20 @@ if (req.userId != id) {
   } catch (error) {
       next(res.json(error));
   }
+}
+
+export const logoutUser = (req: Request, res: Response, next: NextFunction)=> {
+
+   try {
+
+    res.clearCookie('access_token', {path:'/'});
+   res.status(200).json({
+    msg: 'Use has been logged out'
+   })
+
+   } catch (error) {
+    next(error)
+   }
 
 
 }

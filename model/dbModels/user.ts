@@ -2,6 +2,11 @@ import { DataTypes } from "sequelize";
 import DB from "../../db/conection";
 
 const User = DB.define('User',{
+    user_id: {
+  type: DataTypes.BIGINT,
+  primaryKey: true,
+  autoIncrement: true
+},
     username:{
         type:DataTypes.STRING
     },

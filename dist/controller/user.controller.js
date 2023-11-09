@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.updateUserInfo = exports.getUsers = void 0;
+exports.logoutUser = exports.deleteUser = exports.updateUserInfo = exports.getUsers = void 0;
 const bcrypt_1 = require("bcrypt");
 const user_1 = __importDefault(require("../model/dbModels/user"));
 const getUsers = (req, res) => {
@@ -72,7 +72,6 @@ const deleteUser = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         if (!user) {
             next(res.status(404).json({ msg: 'No user found' }));
         }
-        console.log(userState.Disable);
         yield (user === null || user === void 0 ? void 0 : user.update({ status: userState.Disable }));
         res.clearCookie('access_token', { path: '/' });
         res.status(200).json({ msg: 'User deleted' });
@@ -82,4 +81,16 @@ const deleteUser = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.deleteUser = deleteUser;
+const logoutUser = (req, res, next) => {
+    try {
+        res.clearCookie('access_token', { path: '/' });
+        res.status(200).json({
+            msg: 'Use has been logged out'
+        });
+    }
+    catch (error) {
+        next(error);
+    }
+};
+exports.logoutUser = logoutUser;
 //# sourceMappingURL=user.controller.js.map
